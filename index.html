@@ -7,54 +7,112 @@
     <link rel="icon" type="images/x-icon" href="./static/images/favicon.ico">
     <link rel="stylesheet" href="./static/css/bootstrap.min.css">
     <link rel="stylesheet" href="./static/css/style.css">
-    <title>chat</title>
+    <title>teaching</title>
 </head>
 <body>
-  <div class="container">
+<style>
+    a {
+        /* position: absolute; */
+        /* top: 0; */
+        font-size: 30px;
+    }
+</style>
+<a href="https://docs.qq.com/doc/DVFdaY1lvWHFSWU5w">免责声明</a>
+<div class="container">
     <div class="row">
-      <div class="col-xs-12">
-        <div class="title">
-            <h2 class="text-center">私人助理</h2>
-        </div>
-        
-        <div class="key">
-          <div class="input-group col-sm-6">
-            <span class="input-group-addon">
-              <input type="checkbox" class="ipt-1">
-            </span>
-            <input type="text" class="form-control ipt-2" placeholder="使用api key">
-          </div>
-        </div>
-      
-        <div class="answer">
-          <div class="tips text-center">
-            <h3 class="lead">加下面WX获取api key</h3>
-            <img src="./static/images/reward.png">
-          </div>
-          <div id="chatWindow"></div>
-            <div class="input-group ipt">
-              <div class="col-xs-12">
-                <textarea id="chatInput" class="form-control" rows="1"></textarea>
-              </div>
-              <button id="chatBtn" class="btn btn-primary" type="button">Go !</button>
+        <div class="col-xs-12">
+            <div class="title">
+                <h2 class="text-center">私人家教</h2>
             </div>
-          </div>
-        </div>
-      </div>
-      
-    <div class="row foot">
-      <footer class="col-xs-12" style="margin-top: 10px;">
-        <p class="lead text-center">上知天文下知地理，无所不能的私人助理</p>
-<!--         <p class="lead text-center"><a href="https://blog.csdn.net/qq_57421630" target="_blank" style="color:red;text-decoration:none;">@联系我</a></p> -->
-      </footer>
-    </div>
-  </div>   
 
-</body>
+            <div class="key">
+                <div class="input-group col-sm-6">
+                        <span class="input-group-addon">
+                            <input type="checkbox" class="ipt-1">
+                        </span>
+                    <input type="text" class="form-control ipt-2" placeholder="使用api key">
+                </div>
+            </div>
+
+            <div class="answer">
+                <div class="tips text-center">
+                    <h3 class="lead">加下面wx获取api key</h3>
+                    <img src="./static/images/reward.png">
+                </div>
+                <div id="chatWindow"></div>
+                <div class="input-group ipt">
+                    <div class="col-xs-12">
+                        <textarea id="chatInput" class="form-control" rows="1"></textarea>
+                        <button id="speakBtn" class="btn btn-primary" type="button">语音输入</button>
+                    </div>
+                    <button id="chatBtn" class="btn btn-primary" type="button">Go !</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row foot">
+        <footer class="col-xs-12" style="margin-top: 10px;">
+                <pre style="text-align:center;">
+                1.精通从小学到大学的数学，语文，英语，物理，化学和生物
+                这是第二行。
+                </pre>
+            <!--            <p class="lead text-center">1.精通从小学到大学的数学，语文，英语，物理，化学和生物<br>2.充当您和孩子的家庭医生<br>3.充当您和孩子的营养师</p>-->
+            <!--         <p class="lead text-center"><a href="https://blog.csdn.net/qq_57421630" target="_blank" style="color:red;text-decoration:none;">@联系我</a></p> -->
+        </footer>
+    </div>
+</div>
+<a href="video.html">本站使用视频教程</a>
 
 <script src="./static/js/jquery-2.1.1.js"></script>
 <script src="./static/js/bootstrap.min.js"></script>
 <script src="./static/js/marked.min.js"></script>
 <script src="./static/js/layer/layer.js"></script>
 <script src="./static/js/custom.js"></script>
+<script>
+    const chatWindow = document.getElementById("chatWindow");
+    const chatInput = document.getElementById("chatInput");
+    const chatBtn = document.getElementById("chatBtn");
+    const speakBtn = document.getElementById("speakBtn");
+
+    // 创建一个语音识别对象
+    const recognition = new window.webkitSpeechRecognition();
+    recognition.lang = 'zh-CN'; // 设置识别的语言为中文
+
+    // 当识别到文字时触发此函数
+    recognition.onresult = function(event) {
+        const text = event.results[event.results.length - 1][0].transcript;
+        if (text) {
+            // 显示用户输入的文本
+            chatInput.value = text;
+
+            // 将用户输入的文本添加到聊天窗口中
+            sendMessage(text);
+        }
+    }
+
+    // 点击“语音输入”按钮开始语音输入
+    speakBtn.onclick = function() {
+        recognition.start(); // 开始语音输入
+    }
+
+    // 点击“Go !”按钮或按下回车键发送文本消息
+    chatBtn.onclick = function() {
+        sendMessage(chatInput.value.trim());
+    }
+    chatInput.addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+            sendMessage(chatInput.value.trim());
+        }
+    });
+
+    // 发送文本消息
+    function sendMessage(text) {
+        if (text) {
+            chatWindow.innerHTML += '<p>我: ' + text + '</p>';
+            chatInput.value = '';
+        }
+    }
+</script>
+</body>
 </html>
